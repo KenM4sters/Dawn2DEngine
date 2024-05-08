@@ -20,14 +20,13 @@ add_executable(App
 	Device.cpp
 	SwapChain.cpp
 	Renderer.cpp
+	Pipeline.cpp
 	RenderSystems/SimpleRenderSystem.cpp
 )
 
 # Add the 'webgpu' target as a dependency of our App
-target_link_libraries(App PRIVATE glfw webgpu)
-set_target_properties(App PROPERTIES CXX_STANDARD 17)
-
 target_link_libraries(App PRIVATE glfw webgpu glfw3webgpu)
+set_target_properties(App PROPERTIES CXX_STANDARD 17)
 
 # The application's binary must find wgpu.dll or libwgpu.so at runtime,
 # so we automatically copy it (it's called WGPU_RUNTIME_LIB in general)

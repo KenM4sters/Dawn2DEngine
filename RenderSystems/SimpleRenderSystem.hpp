@@ -1,5 +1,6 @@
 #pragma once
 #include "RenderSystem.hpp"
+#include "../Pipeline.hpp"
 
 class SimpleRenderSystem : public RenderSystem 
 {
@@ -8,10 +9,15 @@ class SimpleRenderSystem : public RenderSystem
         
         ~SimpleRenderSystem() override;
 
-        void Init() override;
-
         void WriteToBuffers() override;
 
-        void Run() override;
+        void Run(WGPURenderPassEncoder encoder) override;
 
+    private:
+        
+        void CreatePipeline();
+
+        WGPUPipelineLayout mPipelineLayout;
+
+        std::unique_ptr<Pipeline> mPipeline;
 };

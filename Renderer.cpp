@@ -35,7 +35,7 @@ void Renderer::Run(WGPUTextureView nextTexture) const
 
     // {Render passes go here}
     //
-
+    mSystem->Run(renderPass);
 
     // Finish the render pass.
     //

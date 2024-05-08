@@ -10,15 +10,15 @@
 class Pipeline 
 {
     public:
-        Pipeline(std::shared_ptr<Device>& device, std::string& shaderPath, WGPUPipelineLayout layout);
+        Pipeline(std::shared_ptr<Device>& device, std::string shaderPath, WGPUPipelineLayout layout);
         ~Pipeline();
 
         void Set(WGPURenderPassEncoder encoder) const { wgpuRenderPassEncoderSetPipeline(encoder, mRenderPipeline); }
 
     private:
-        std::vector<char> ReadFromFile(const std::string& path);
+        std::vector<char> ReadFromFile(const std::string path);
 
-        void CreateGraphicsPipeline(const std::string& shaderPath, WGPUPipelineLayout layout);
+        void CreateGraphicsPipeline(const std::string shaderPath, WGPUPipelineLayout layout);
 
         std::shared_ptr<Device>& mDevice;
 

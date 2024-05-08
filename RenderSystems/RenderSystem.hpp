@@ -13,12 +13,10 @@ class RenderSystem
         }
 
         virtual ~RenderSystem() {}
-
-        virtual void Init() = 0;
         
         virtual void WriteToBuffers() = 0;
 
-        virtual void Run() = 0;
+        virtual void Run(WGPURenderPassEncoder encoder) = 0;
 
     protected:
 

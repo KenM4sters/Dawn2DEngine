@@ -5,7 +5,7 @@
 #include <cassert>
 
 
-Pipeline::Pipeline(std::shared_ptr<Device>& device, std::string& shaderPath, WGPUPipelineLayout layout) 
+Pipeline::Pipeline(std::shared_ptr<Device>& device, std::string shaderPath, WGPUPipelineLayout layout) 
     : mDevice{device}
 {
     CreateGraphicsPipeline(shaderPath, layout);
@@ -13,10 +13,10 @@ Pipeline::Pipeline(std::shared_ptr<Device>& device, std::string& shaderPath, WGP
 
 Pipeline::~Pipeline() 
 {
-
+    
 }
 
-std::vector<char> Pipeline::ReadFromFile(const std::string& path) 
+std::vector<char> Pipeline::ReadFromFile(const std::string path) 
 {
     std::ifstream file{path, std::ios::ate | std::ios::binary}; 
 
@@ -35,7 +35,7 @@ std::vector<char> Pipeline::ReadFromFile(const std::string& path)
     return buffer;
 }
 
-void Pipeline::CreateGraphicsPipeline(const std::string& shaderPath, WGPUPipelineLayout layout) 
+void Pipeline::CreateGraphicsPipeline(const std::string shaderPath, WGPUPipelineLayout layout) 
 {
     auto shaderSrc = ReadFromFile(shaderPath);
 
