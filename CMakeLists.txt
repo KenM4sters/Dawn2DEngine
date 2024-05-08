@@ -19,6 +19,8 @@ add_executable(App
 	Window.cpp
 	Device.cpp
 	SwapChain.cpp
+	Renderer.cpp
+	RenderSystems/SimpleRenderSystem.cpp
 )
 
 # Add the 'webgpu' target as a dependency of our App

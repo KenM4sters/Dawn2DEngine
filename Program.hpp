@@ -1,13 +1,16 @@
+#pragma once
 #include <iostream>
 #include "Window.hpp"
 #include "Device.hpp"
 #include "SwapChain.hpp"
+#include "Renderer.hpp"
 
 typedef struct AdapterPayload 
 {
     WGPUAdapter Adapter;
     WGPUSurface Surface;
-} AdapterPayload;
+} 
+AdapterPayload;
 
 class Program 
 {
@@ -24,4 +27,5 @@ class Program
         std::shared_ptr<Window> mWindow = nullptr;
         std::shared_ptr<Device> mDevice = nullptr;
         std::shared_ptr<SwapChain> mSwapChain = nullptr;
+        std::shared_ptr<Renderer> mRenderer = nullptr;
 };

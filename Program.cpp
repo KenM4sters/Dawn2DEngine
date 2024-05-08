@@ -69,6 +69,8 @@ Program::Program(uint32_t w, uint32_t h, const char* label)
 
     mSwapChain = std::make_shared<SwapChain>(mDevice->GetDevice(), p.Surface);
 
+    mRenderer = std::make_shared<Renderer>(mDevice);
+
 }
 
 Program::~Program() 
@@ -82,42 +84,15 @@ void Program::Run() const
     {
         glfwPollEvents();
         
-        // Get the current texture view that we'll render to from the swap chain.
+        // Get the current texture view that we'll render to from the swap chain and
+        // and set up the render pass and color attachment configurations.
+        //
         WGPUTextureView nextTexture = wgpuSwapChainGetCurrentTextureView(mSwapChain->GetSwapChain()); 
         assert(nextTexture);
 
-        mDevice->InitCommandEncoder();
+        mRenderer->Run(nextTexture);
 
-        WGPURenderPassColorAttachment renderPassColorAttachment = {};
-        renderPassColorAttachment.view = nextTexture;
-        renderPassColorAttachment.resolveTarget = nullptr;
-        renderPassColorAttachment.loadOp = WGPULoadOp_Clear;
-        renderPassColorAttachment.storeOp = WGPUStoreOp_Store;
-        renderPassColorAttachment.clearValue = WGPUColor{ 0.2, 0.4, 0.7, 1.0 };
-
-        WGPURenderPassDescriptor renderPassDesc = {};
-        renderPassDesc.colorAttachmentCount = 1;
-        renderPassDesc.colorAttachments = &renderPassColorAttachment;
-        renderPassDesc.depthStencilAttachment = nullptr;
-        renderPassDesc.timestampWriteCount = 0;
-        renderPassDesc.timestampWrites = nullptr;
-        renderPassDesc.nextInChain = nullptr;
-
-
-        WGPURenderPassEncoder renderPass = wgpuCommandEncoderBeginRenderPass(mDevice->GetEncoder(), &renderPassDesc);
-        wgpuRenderPassEncoderEnd(renderPass);
-        wgpuRenderPassEncoderRelease(renderPass);
-
-        wgpuTextureViewRelease(nextTexture);
-
-        mDevice->InitCommandBuffer();
-
-        const auto cmd = mDevice->GetCommandBuffer();
-
-        wgpuCommandEncoderRelease(mDevice->GetEncoder());
-		wgpuQueueSubmit(mDevice->GetQueue(), 1, &cmd);
-		wgpuCommandBufferRelease(cmd);
-
+        // Finally tell the swapchain to present our texture to the screen.
         wgpuSwapChainPresent(mSwapChain->GetSwapChain());
     }
 }
