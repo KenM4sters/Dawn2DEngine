@@ -1,4 +1,5 @@
 #include <GLFW/glfw3.h>
+#include <glfw3webgpu.h>
 
 class Window 
 {
@@ -9,6 +10,8 @@ class Window
 
 
         bool WindowShouldClose() const { return mWindowShouldClose; } 
+
+        WGPUSurface GetWindowSurface(WGPUInstance instance) const { return glfwGetWGPUSurface(instance, mWindow); }
 
     private:
 

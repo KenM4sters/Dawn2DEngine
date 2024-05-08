@@ -1,5 +1,13 @@
-#include "Window.hpp"
 #include <iostream>
+#include "Window.hpp"
+#include "Device.hpp"
+#include "SwapChain.hpp"
+
+typedef struct AdapterPayload 
+{
+    WGPUAdapter Adapter;
+    WGPUSurface Surface;
+} AdapterPayload;
 
 class Program 
 {
@@ -10,6 +18,10 @@ class Program
         void Run() const;
     
     private:
+
+        AdapterPayload RequestAndInspectAdapter() const;
         
         std::shared_ptr<Window> mWindow = nullptr;
+        std::shared_ptr<Device> mDevice = nullptr;
+        std::shared_ptr<SwapChain> mSwapChain = nullptr;
 };

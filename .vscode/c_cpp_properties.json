@@ -4,7 +4,8 @@
             "name": "Mac",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/Users/samuelbrookman/Desktop/Engines/DawnEngine/glfw/include/**"
+                "/Users/samuelbrookman/Desktop/Engines/DawnEngine/extern/glfw/include/**",
+                "/Users/samuelbrookman/Desktop/Engines/DawnEngine/extern/glfw3webgpu/**"
             ],
             "defines": [],
             "macFrameworkPath": [

@@ -15,4 +15,4 @@ cmake . -B build-dawn
 cmake --build build-dawn
 ```
 
-Then run either `./build-dawn/App`
+Then run `./build-dawn/App`.

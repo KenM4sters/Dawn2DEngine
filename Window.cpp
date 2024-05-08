@@ -15,6 +15,7 @@ Window::Window(uint32_t w, uint32_t h, const char* label)
         std::cerr << "Could not initialize GLFW!" << std::endl;
     }
 
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     mWindow = glfwCreateWindow(mWidth, mHeight, mLabel, NULL, NULL);
 
     if (!mWindow) 
@@ -26,6 +27,8 @@ Window::Window(uint32_t w, uint32_t h, const char* label)
     glfwSetWindowCloseCallback(mWindow, OnWindowCloseCallback);
     
 }
+
+
 
 Window::~Window() 
 {
