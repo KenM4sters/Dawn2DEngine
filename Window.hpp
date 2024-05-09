@@ -7,6 +7,7 @@ class Window
     public:
 
         Window(uint32_t w, uint32_t h, const char* label);
+
         ~Window();
 
 
@@ -19,9 +20,11 @@ class Window
         static void OnWindowCloseCallback(GLFWwindow* window);
 
         static bool mWindowShouldClose;
+        
         GLFWwindow* mWindow = nullptr;
 
         uint32_t mWidth;
+
         uint32_t mHeight;
 
         const char* mLabel;

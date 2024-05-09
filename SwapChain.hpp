@@ -6,6 +6,7 @@ class SwapChain
 {
     public:
         SwapChain(WGPUDevice device, WGPUSurface surface);
+        
         ~SwapChain();
 
         inline const WGPUSwapChain GetSwapChain() const { return mSwapChain; }

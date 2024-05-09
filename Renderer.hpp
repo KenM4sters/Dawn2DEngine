@@ -10,6 +10,7 @@ class Renderer
     public:
 
         Renderer(std::shared_ptr<Device>& device);
+        
         ~Renderer();
 
         void PrepareSystems() const;

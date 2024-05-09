@@ -12,6 +12,7 @@ class Pipeline
 {
     public:
         Pipeline(const std::shared_ptr<Device>& device, std::string shaderPath, WGPUPipelineLayout pipelineLayout, const NativeBufferLayout& bufferLayout);
+        
         ~Pipeline();
 
         void Set(WGPURenderPassEncoder encoder) const { wgpuRenderPassEncoderSetPipeline(encoder, mRenderPipeline); }

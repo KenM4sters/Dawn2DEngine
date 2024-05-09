@@ -18,7 +18,7 @@ SimpleRenderSystem::~SimpleRenderSystem()
 
 void SimpleRenderSystem::UpdateBuffers() 
 {
-
+    
 }
 
 void SimpleRenderSystem::Run(const WGPURenderPassEncoder encoder) 
