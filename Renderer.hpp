@@ -14,7 +14,7 @@ class Renderer
 
         void PrepareSystems() const;
 
-        void Run(WGPUTextureView nextTexture) const;
+        void Run(const WGPUTextureView nextTexture) const;
         
     private:
         

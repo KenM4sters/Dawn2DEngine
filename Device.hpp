@@ -5,7 +5,7 @@
 class Device 
 {
     public:
-        Device(WGPUAdapter adapter);
+        Device(const WGPUAdapter adapter);
         ~Device();
 
         const WGPUDevice GetDevice() const { return mGPU; }
@@ -23,4 +23,5 @@ class Device
         WGPUQueue mQueue;
         WGPUCommandEncoder mEncoder;
         WGPUCommandBuffer mCommandBuffer;
+        WGPUAdapter mAdapter;
 };

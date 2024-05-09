@@ -63,8 +63,9 @@ Program::Program(uint32_t w, uint32_t h, const char* label)
 {
     mWindow = std::make_shared<Window>(w, h, label);
 
+    // Check that a gpu adapter is available (err is thrown if not) and pass it to the Device.
     AdapterPayload p = RequestAndInspectAdapter();
-    
+
     mDevice = std::make_shared<Device>(p.Adapter);
 
     mSwapChain = std::make_shared<SwapChain>(mDevice->GetDevice(), p.Surface);
@@ -97,6 +98,8 @@ void Program::Run() const
         // Finally tell the swapchain to present our texture to the screen.
         wgpuSwapChainPresent(mSwapChain->GetSwapChain());
     }
+
+    
 }
 
 AdapterPayload Program::RequestAndInspectAdapter() const 

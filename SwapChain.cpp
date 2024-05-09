@@ -18,5 +18,5 @@ SwapChain::SwapChain(WGPUDevice device, WGPUSurface surface)
 
 SwapChain::~SwapChain() 
 {
-
+    wgpuSwapChainRelease(mSwapChain);
 }

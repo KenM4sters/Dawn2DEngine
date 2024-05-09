@@ -11,7 +11,7 @@ std::vector<float> SQUARE_VERTICES =
     1.0, 0.0, // bottom-right
 };
 
-Geometry::Geometry(std::shared_ptr<Device>& device) 
+Geometry::Geometry(const std::shared_ptr<Device>& device) 
     : mVertices{SQUARE_VERTICES}
 {
 
@@ -30,7 +30,7 @@ Geometry::~Geometry()
 
 }
 
-void Geometry::CreateBuffers(std::shared_ptr<Device>& device) 
+void Geometry::CreateBuffers(const std::shared_ptr<Device>& device) 
 {
     // Create vertex buffer descriptor followed by the buffer itself.
     //

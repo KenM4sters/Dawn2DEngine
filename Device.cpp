@@ -9,7 +9,8 @@
  *     const device = await adapter.requestDevice(descriptor);
  * It is very similar to requestAdapter
  */
-WGPUDevice requestDevice(WGPUAdapter adapter, WGPUDeviceDescriptor const * descriptor) {
+WGPUDevice requestDevice(const WGPUAdapter adapter, WGPUDeviceDescriptor const * descriptor)
+{
     struct UserData {
         WGPUDevice device = nullptr;
         bool requestEnded = false;
@@ -40,7 +41,8 @@ WGPUDevice requestDevice(WGPUAdapter adapter, WGPUDeviceDescriptor const * descr
 
 
 
-Device::Device(WGPUAdapter adapter) 
+Device::Device(const WGPUAdapter adapter)
+    : mAdapter(adapter) 
 {
     std::cout << "Requesting device..." << std::endl;
 
@@ -52,7 +54,7 @@ Device::Device(WGPUAdapter adapter)
     deviceDesc.defaultQueue.nextInChain = nullptr;
     deviceDesc.defaultQueue.label = "The default queue"; // anything works here.
 
-    mGPU = requestDevice(adapter, &deviceDesc);
+    mGPU = requestDevice(mAdapter, &deviceDesc);
 
     // Callback for capturing device related issues.
     auto onDeviceError = [](WGPUErrorType type, char const* message, void* /* pUserData */) 
@@ -77,13 +79,19 @@ Device::Device(WGPUAdapter adapter)
     };
 
     // Not sure what @param single value is here - doesn't seem to call though with it set to 0 or 1.
-    wgpuQueueOnSubmittedWorkDone(mQueue, 1, onQueueWorkDone, nullptr);
+    wgpuQueueOnSubmittedWorkDone(mQueue, 0, onQueueWorkDone, nullptr);
+
+    wgpuDeviceSetDeviceLostCallback(mGPU, nullptr, nullptr);
 }
 
 Device::~Device() 
 {
-
+    wgpuDeviceRelease(mGPU);
+    wgpuAdapterRelease(mAdapter);
+    wgpuQueueRelease(mQueue);
 }
+
+
 
 void Device::InitCommandEncoder() 
 {

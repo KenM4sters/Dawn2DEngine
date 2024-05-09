@@ -1,6 +1,6 @@
 #include "SimpleRenderSystem.hpp"
 
-SimpleRenderSystem::SimpleRenderSystem(std::shared_ptr<Device>& device) 
+SimpleRenderSystem::SimpleRenderSystem(const std::shared_ptr<Device>& device) 
     : RenderSystem(device)
 {
     mGeometry = new Geometry(mDevice);
@@ -12,16 +12,16 @@ SimpleRenderSystem::SimpleRenderSystem(std::shared_ptr<Device>& device)
 
 SimpleRenderSystem::~SimpleRenderSystem() 
 {
-
+    delete mGeometry;
 }
  
 
-void SimpleRenderSystem::WriteToBuffers() 
+void SimpleRenderSystem::UpdateBuffers() 
 {
+
 }
 
-
-void SimpleRenderSystem::Run(WGPURenderPassEncoder encoder) 
+void SimpleRenderSystem::Run(const WGPURenderPassEncoder encoder) 
 {
     mPipeline->Set(encoder);
     wgpuRenderPassEncoderSetVertexBuffer(encoder, 0, mGeometry->GetVertexBuffer(), 0, mGeometry->GetVertices().size()*sizeof(float));

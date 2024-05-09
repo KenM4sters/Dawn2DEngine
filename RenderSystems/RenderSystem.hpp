@@ -6,7 +6,7 @@ class RenderSystem
 {
     public:
 
-        RenderSystem(std::shared_ptr<Device>& device)
+        RenderSystem(const std::shared_ptr<Device>& device)
             : mDevice{device}
         {
 
@@ -14,12 +14,12 @@ class RenderSystem
 
         virtual ~RenderSystem() {}
         
-        virtual void WriteToBuffers() = 0;
+        virtual void UpdateBuffers() = 0;
 
         virtual void Run(WGPURenderPassEncoder encoder) = 0;
 
     protected:
 
-        std::shared_ptr<Device>& mDevice;
+        const std::shared_ptr<Device>& mDevice;
 
 };

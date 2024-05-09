@@ -13,10 +13,10 @@ Renderer::~Renderer()
 
 void Renderer::PrepareSystems() const 
 {
-    mSystem->WriteToBuffers();
+    mSystem->UpdateBuffers();
 }
 
-void Renderer::Run(WGPUTextureView nextTexture) const
+void Renderer::Run(const WGPUTextureView nextTexture) const
 {
     WGPURenderPassColorAttachment renderPassColorAttachment = {};
     renderPassColorAttachment.view = nextTexture;
@@ -40,23 +40,27 @@ void Renderer::Run(WGPUTextureView nextTexture) const
 
 
     // Run each render system.
-    //
     mSystem->Run(renderPass);
 
 
     // Finish the render pass.
-    //
     wgpuRenderPassEncoderEnd(renderPass);
-    wgpuRenderPassEncoderRelease(renderPass);
-    wgpuTextureViewRelease(nextTexture);
 
 
     // Store all the encoder commands in a buffer which gets sent to the gpu and realeased cpu side.
     //
     mDevice->InitCommandBuffer();
     const auto cmd = mDevice->GetCommandBuffer();
-    wgpuCommandEncoderRelease(mDevice->GetEncoder());
+
+    // Submit the queue of commands to the gpu.
     wgpuQueueSubmit(mDevice->GetQueue(), 1, &cmd);
+
+
+    // Release the resources for this frame.
+    //
+    wgpuRenderPassEncoderRelease(renderPass);
+    wgpuTextureViewRelease(nextTexture);
+    wgpuCommandEncoderRelease(mDevice->GetEncoder());
     wgpuCommandBufferRelease(cmd);
 }   
 

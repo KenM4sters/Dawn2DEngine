@@ -5,7 +5,7 @@
 #include <cassert>
 
 
-Pipeline::Pipeline(std::shared_ptr<Device>& device, std::string shaderPath, WGPUPipelineLayout layout, const NativeBufferLayout& bufferLayout) 
+Pipeline::Pipeline(const std::shared_ptr<Device>& device, std::string shaderPath, WGPUPipelineLayout layout, const NativeBufferLayout& bufferLayout) 
     : mDevice{device}
 {
     CreateGraphicsPipeline(shaderPath, layout, bufferLayout);
@@ -13,7 +13,8 @@ Pipeline::Pipeline(std::shared_ptr<Device>& device, std::string shaderPath, WGPU
 
 Pipeline::~Pipeline() 
 {
-    
+    wgpuRenderPipelineRelease(mRenderPipeline);
+    wgpuShaderModuleRelease(mShaderModule);
 }
 
 std::vector<char> Pipeline::ReadFromFile(const std::string path) 

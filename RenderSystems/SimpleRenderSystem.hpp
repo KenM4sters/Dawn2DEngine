@@ -6,11 +6,11 @@
 class SimpleRenderSystem : public RenderSystem 
 {
     public:
-        SimpleRenderSystem(std::shared_ptr<Device>& device);
+        SimpleRenderSystem(const std::shared_ptr<Device>& device);
         
         ~SimpleRenderSystem() override;
 
-        void WriteToBuffers() override;
+        void UpdateBuffers() override;
 
         void Run(WGPURenderPassEncoder encoder) override;
 

@@ -13,7 +13,7 @@ class Geometry
 {
     public:
 
-        Geometry(std::shared_ptr<Device>& device);
+        Geometry(const std::shared_ptr<Device>& device);
 
         ~Geometry();
 
@@ -25,7 +25,7 @@ class Geometry
 
     private:
     
-        void CreateBuffers(std::shared_ptr<Device>& device);
+        void CreateBuffers(const std::shared_ptr<Device>& device);
 
         std::vector<float>& mVertices;
 
