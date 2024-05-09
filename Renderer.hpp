@@ -12,6 +12,8 @@ class Renderer
         Renderer(std::shared_ptr<Device>& device);
         ~Renderer();
 
+        void PrepareSystems() const;
+
         void Run(WGPUTextureView nextTexture) const;
         
     private:

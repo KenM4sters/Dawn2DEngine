@@ -17,7 +17,12 @@ class Geometry
 
         ~Geometry();
 
-        
+        inline const NativeBufferLayout& GetNativeBufferLayout() const { return mNativeLayout; }
+
+        inline const WGPUBuffer& GetVertexBuffer() const { return mVertexBuffer; }
+
+        inline const std::vector<float>& GetVertices() const { return mVertices; }
+
     private:
     
         void CreateBuffers(std::shared_ptr<Device>& device);

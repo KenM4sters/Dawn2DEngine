@@ -84,6 +84,8 @@ void Program::Run() const
     {
         glfwPollEvents();
         
+        mRenderer->PrepareSystems();
+        
         // Get the current texture view that we'll render to from the swap chain and
         // and set up the render pass and color attachment configurations.
         //

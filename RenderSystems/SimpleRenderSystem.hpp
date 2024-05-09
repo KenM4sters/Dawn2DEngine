@@ -1,6 +1,7 @@
 #pragma once
 #include "RenderSystem.hpp"
 #include "../Pipeline.hpp"
+#include "../Geometry.hpp"
 
 class SimpleRenderSystem : public RenderSystem 
 {
@@ -20,4 +21,6 @@ class SimpleRenderSystem : public RenderSystem
         WGPUPipelineLayout mPipelineLayout;
 
         std::unique_ptr<Pipeline> mPipeline;
+
+        Geometry* mGeometry = nullptr;
 };

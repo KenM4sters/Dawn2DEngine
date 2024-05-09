@@ -7,9 +7,9 @@ class RenderSystem
     public:
 
         RenderSystem(std::shared_ptr<Device>& device)
-            : mDevice{device} 
+            : mDevice{device}
         {
-            
+
         }
 
         virtual ~RenderSystem() {}

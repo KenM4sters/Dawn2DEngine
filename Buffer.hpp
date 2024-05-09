@@ -1,4 +1,4 @@
-#include <webgpu.h>
+#include <webgpu/webgpu.h>
 #include <vector>
 #include <cassert>
 
@@ -38,7 +38,7 @@ class BufferLayout
         BufferLayout(std::vector<BufferAttribute>& attribs)
             : mAttribs{attribs} 
         {
-            
+            CalculateStrideAndOffset();
         }
 
         ~BufferLayout() {}

@@ -5,10 +5,10 @@
 #include <cassert>
 
 
-Pipeline::Pipeline(std::shared_ptr<Device>& device, std::string shaderPath, WGPUPipelineLayout layout) 
+Pipeline::Pipeline(std::shared_ptr<Device>& device, std::string shaderPath, WGPUPipelineLayout layout, const NativeBufferLayout& bufferLayout) 
     : mDevice{device}
 {
-    CreateGraphicsPipeline(shaderPath, layout);
+    CreateGraphicsPipeline(shaderPath, layout, bufferLayout);
 }
 
 Pipeline::~Pipeline() 
@@ -35,7 +35,7 @@ std::vector<char> Pipeline::ReadFromFile(const std::string path)
     return buffer;
 }
 
-void Pipeline::CreateGraphicsPipeline(const std::string shaderPath, WGPUPipelineLayout layout) 
+void Pipeline::CreateGraphicsPipeline(const std::string shaderPath, WGPUPipelineLayout layout, const NativeBufferLayout& bufferLayout) 
 {
     auto shaderSrc = ReadFromFile(shaderPath);
 
@@ -70,8 +70,8 @@ void Pipeline::CreateGraphicsPipeline(const std::string shaderPath, WGPUPipeline
 
     WGPURenderPipelineDescriptor pipelineDesc{};
     pipelineDesc.nextInChain = nullptr;
-    pipelineDesc.vertex.bufferCount = 0;
-    pipelineDesc.vertex.buffers = nullptr;
+    pipelineDesc.vertex.bufferCount = 1;
+    pipelineDesc.vertex.buffers = &bufferLayout.Layout;
     pipelineDesc.vertex.module = mShaderModule;
     pipelineDesc.vertex.entryPoint = "vs_main";
     pipelineDesc.vertex.constantCount = 0;

@@ -6,7 +6,7 @@ std::vector<float> SQUARE_VERTICES =
     1.0, 0.0, // bottom-right
     0.0, 0.0, // bottom-left 
 
-    0.0, 1.0, // top-left
+    0.0, 1.0, // top-left   
     1.0, 1.0, // top-right
     1.0, 0.0, // bottom-right
 };
@@ -54,12 +54,12 @@ void Geometry::CreateBuffers(std::shared_ptr<Device>& device)
         mNativeLayout.Attributes.push_back(nativeAttrib);
     }
 
-
     // Setting the native layout with the native attributes.
     //
     mNativeLayout.Layout.attributeCount = mNativeLayout.Attributes.size();
     mNativeLayout.Layout.attributes = mNativeLayout.Attributes.data();
     mNativeLayout.Layout.arrayStride = mBufferLayout->GetBufferStride();
     mNativeLayout.Layout.stepMode = WGPUVertexStepMode_Vertex;
+
 }
 

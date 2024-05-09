@@ -11,6 +11,10 @@ Renderer::~Renderer()
 
 }
 
+void Renderer::PrepareSystems() const 
+{
+    mSystem->WriteToBuffers();
+}
 
 void Renderer::Run(WGPUTextureView nextTexture) const
 {
@@ -21,6 +25,7 @@ void Renderer::Run(WGPUTextureView nextTexture) const
     renderPassColorAttachment.storeOp = WGPUStoreOp_Store;
     renderPassColorAttachment.clearValue = WGPUColor{ 0.2, 0.4, 0.7, 1.0 };
 
+
     WGPURenderPassDescriptor renderPassDesc = {};
     renderPassDesc.colorAttachmentCount = 1;
     renderPassDesc.colorAttachments = &renderPassColorAttachment;
@@ -29,13 +34,15 @@ void Renderer::Run(WGPUTextureView nextTexture) const
     renderPassDesc.timestampWrites = nullptr;
     renderPassDesc.nextInChain = nullptr;
 
+
     mDevice->InitCommandEncoder();
     WGPURenderPassEncoder renderPass = wgpuCommandEncoderBeginRenderPass(mDevice->GetEncoder(), &renderPassDesc);
 
 
-    // {Render passes go here}
+    // Run each render system.
     //
     mSystem->Run(renderPass);
+
 
     // Finish the render pass.
     //
