@@ -63,7 +63,7 @@ WGPUAdapter requestAdapter(WGPUInstance instance, WGPURequestAdapterOptions cons
 
 Program::Program(uint32_t w, uint32_t h, const char* label) 
 {
-    AssetManager::SubmitCamera(new OrthographicCamera({0.0f, 0.0f, 1.0f}, 600, 800));
+    AssetManager::SubmitCamera(new OrthographicCamera({0.0f, 0.0f, 0.5f}, 100.0, 100.0));
     
     mWindow = std::make_shared<Window>(w, h, label);
 
@@ -98,6 +98,8 @@ void Program::Run() const
         assert(nextTexture);
 
         mRenderer->Run(nextTexture);
+
+        wgpuDeviceTick(mDevice->GetDevice());
 
         // Finally tell the swapchain to present our texture to the screen.
         wgpuSwapChainPresent(mSwapChain->GetSwapChain());

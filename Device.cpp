@@ -81,7 +81,12 @@ Device::Device(const WGPUAdapter adapter)
     // Not sure what @param single value is here - doesn't seem to call though with it set to 0 or 1.
     wgpuQueueOnSubmittedWorkDone(mQueue, 0, onQueueWorkDone, nullptr);
 
-    wgpuDeviceSetDeviceLostCallback(mGPU, nullptr, nullptr);
+    auto onDeviceLost = [](WGPUDeviceLostReason status, const char* message, void* /* pUserData */) 
+    {
+        std::cout << message << " with status:  " << status << std::endl;
+    };
+
+    wgpuDeviceSetDeviceLostCallback(mGPU, onDeviceLost, nullptr);
 }
 
 Device::~Device() 

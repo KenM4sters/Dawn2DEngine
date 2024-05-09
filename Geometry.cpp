@@ -2,13 +2,13 @@
 
 std::vector<float> SQUARE_VERTICES = 
 {
-    0.0, 1.0, // top-left
-    1.0, 0.0, // bottom-right
-    0.0, 0.0, // bottom-left 
+    0.0f, 1.0f, 0.0f, // top-left
+    1.0f, 0.0f, 0.0f, // bottom-right
+    0.0f, 0.0f, 0.0f, // bottom-left 
 
-    0.0, 1.0, // top-left   
-    1.0, 1.0, // top-right
-    1.0, 0.0, // bottom-right
+    0.0f, 1.0f, 0.0f, // top-left   
+    1.0f, 1.0f, 0.0f, // top-right
+    1.0f, 0.0f, 0.0f, // bottom-right
 };
 
 Geometry::Geometry(const std::shared_ptr<Device>& device) 
@@ -17,7 +17,7 @@ Geometry::Geometry(const std::shared_ptr<Device>& device)
 
     std::vector<BufferAttribute> attribs = 
     {
-        BufferAttribute(0, WGPUVertexFormat_Float32x2), // Position attribute.
+        BufferAttribute(0, WGPUVertexFormat_Float32x3), // Position attribute.
     };
 
     mBufferLayout = std::make_shared<BufferLayout>(attribs);

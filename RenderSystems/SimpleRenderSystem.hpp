@@ -1,7 +1,12 @@
 #pragma once
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include "RenderSystem.hpp"
 #include "../Pipeline.hpp"
 #include "../Geometry.hpp"
+
+
+
 
 class SimpleRenderSystem : public RenderSystem 
 {
@@ -23,4 +28,9 @@ class SimpleRenderSystem : public RenderSystem
         std::unique_ptr<Pipeline> mPipeline;
 
         Geometry* mGeometry = nullptr;
+
+        std::vector<UniformBufferObject> mUniformBuffers{};
+
+        glm::mat4 mModel{1.0f};
+        glm::vec3 mColor{1.0f, 0.5f, 0.0f};
 };

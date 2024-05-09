@@ -16,7 +16,7 @@ struct VertexOutput
 
 
 @vertex
-fn mainVert(@location(0) pos: vec3f) -> VertexOutput 
+fn vs_main(@location(0) pos: vec3f) -> VertexOutput 
 {
     var output : VertexOutput;
     output.Position = camera.Projection * camera.View * model * vec4f(pos, 1.0);
@@ -26,7 +26,7 @@ fn mainVert(@location(0) pos: vec3f) -> VertexOutput
 
 
 @fragment
-fn mainFrag() -> @location(0) vec4f 
+fn fs_main() -> @location(0) vec4f 
 {
     return vec4f(albedo, 1.0);
 }

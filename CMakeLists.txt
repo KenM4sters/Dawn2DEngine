@@ -27,6 +27,7 @@ add_executable(App
 	Buffer.cpp
 	Geometry.cpp
 	Camera.cpp
+	AssetManager.cpp
 	RenderSystems/SimpleRenderSystem.cpp
 )
 

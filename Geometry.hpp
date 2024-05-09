@@ -9,6 +9,12 @@ struct NativeBufferLayout
     std::vector<WGPUVertexAttribute> Attributes{};
 };
 
+struct UniformBufferObject
+{
+    WGPUBuffer UniformBuffer;
+    WGPUBindGroup BindGroup;
+};
+
 class Geometry 
 {
     public:
