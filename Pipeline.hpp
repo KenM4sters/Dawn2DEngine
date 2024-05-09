@@ -24,8 +24,7 @@ class Pipeline
 
         WGPURenderPipeline mRenderPipeline;
 
-        WGPUShaderModule mVertexModules;
-        WGPUShaderModule mFragmentModule;
+        WGPUShaderModule mShaderModule;
 
 
 };

@@ -45,7 +45,7 @@ void Pipeline::CreateGraphicsPipeline(const std::string shaderPath, WGPUPipeline
     shaderCodeDesc.chain.sType = WGPUSType_ShaderModuleWGSLDescriptor;
     shaderDesc.nextInChain = &shaderCodeDesc.chain;
     shaderCodeDesc.code = reinterpret_cast<const char*>(shaderSrc.data());
-    WGPUShaderModule shaderModule = wgpuDeviceCreateShaderModule(mDevice->GetDevice(), &shaderDesc);
+    mShaderModule = wgpuDeviceCreateShaderModule(mDevice->GetDevice(), &shaderDesc);
 
     WGPUBlendState blendState{};
     blendState.color.srcFactor = WGPUBlendFactor_SrcAlpha;
@@ -61,7 +61,7 @@ void Pipeline::CreateGraphicsPipeline(const std::string shaderPath, WGPUPipeline
     colorTarget.writeMask = WGPUColorWriteMask_All; // We could write to only some of the color channels.
 
     WGPUFragmentState fragmentState{};
-    fragmentState.module = shaderModule;
+    fragmentState.module = mShaderModule;
     fragmentState.entryPoint = "fs_main";
     fragmentState.constantCount = 0;
     fragmentState.constants = nullptr;
@@ -72,7 +72,7 @@ void Pipeline::CreateGraphicsPipeline(const std::string shaderPath, WGPUPipeline
     pipelineDesc.nextInChain = nullptr;
     pipelineDesc.vertex.bufferCount = 0;
     pipelineDesc.vertex.buffers = nullptr;
-    pipelineDesc.vertex.module = shaderModule;
+    pipelineDesc.vertex.module = mShaderModule;
     pipelineDesc.vertex.entryPoint = "vs_main";
     pipelineDesc.vertex.constantCount = 0;
     pipelineDesc.vertex.constants = nullptr;

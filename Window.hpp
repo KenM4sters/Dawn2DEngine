@@ -10,9 +10,9 @@ class Window
         ~Window();
 
 
-        bool WindowShouldClose() const { return mWindowShouldClose; } 
+        inline bool WindowShouldClose() const { return mWindowShouldClose; } 
 
-        WGPUSurface GetWindowSurface(WGPUInstance instance) const { return glfwGetWGPUSurface(instance, mWindow); }
+        inline WGPUSurface GetWindowSurface(WGPUInstance instance) const { return glfwGetWGPUSurface(instance, mWindow); }
 
     private:
 

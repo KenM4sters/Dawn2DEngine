@@ -8,7 +8,7 @@ class SwapChain
         SwapChain(WGPUDevice device, WGPUSurface surface);
         ~SwapChain();
 
-        const WGPUSwapChain GetSwapChain() const { return mSwapChain; }
+        inline const WGPUSwapChain GetSwapChain() const { return mSwapChain; }
 
     private:
 

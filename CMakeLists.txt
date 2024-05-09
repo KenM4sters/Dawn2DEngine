@@ -21,6 +21,8 @@ add_executable(App
 	SwapChain.cpp
 	Renderer.cpp
 	Pipeline.cpp
+	Buffer.cpp
+	Geometry.cpp
 	RenderSystems/SimpleRenderSystem.cpp
 )
 
