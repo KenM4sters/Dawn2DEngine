@@ -1,4 +1,6 @@
+#pragma once
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 class OrthographicCamera 
 {
@@ -26,11 +28,16 @@ class OrthographicCamera
     
     private:
 
-        void RecalculateTransforms();
+        void RecalculateTransforms(uint32_t w, uint32_t h);
 
         glm::mat4 mProjection = glm::mat4(1.0f);
 
         glm::mat4 mView = glm::mat4(1.0f);
 
         glm::vec3 mPosition{0.0f};
+
+        glm::vec3 mUp{0.0f, 1.0f, 0.0f};
+        
+        glm::vec3 mRight{1.0f, 0.0f, 0.0f};
+        
 };

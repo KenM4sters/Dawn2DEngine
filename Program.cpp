@@ -3,6 +3,8 @@
 #include <cassert>
 
 #include "Program.hpp"
+#include "AssetManager.hpp"
+#include "Camera.hpp"
 
 /**
  * Utility function to get a WebGPU adapter, so that
@@ -61,6 +63,8 @@ WGPUAdapter requestAdapter(WGPUInstance instance, WGPURequestAdapterOptions cons
 
 Program::Program(uint32_t w, uint32_t h, const char* label) 
 {
+    AssetManager::SubmitCamera(new OrthographicCamera({0.0f, 0.0f, 1.0f}, 600, 800));
+    
     mWindow = std::make_shared<Window>(w, h, label);
 
     // Check that a gpu adapter is available (err is thrown if not) and pass it to the Device.
@@ -99,7 +103,7 @@ void Program::Run() const
         wgpuSwapChainPresent(mSwapChain->GetSwapChain());
     }
 
-    
+    AssetManager::Delete();
 }
 
 AdapterPayload Program::RequestAndInspectAdapter() const 

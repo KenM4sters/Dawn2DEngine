@@ -28,5 +28,4 @@ class Pipeline
 
         WGPUShaderModule mShaderModule;
 
-
 };

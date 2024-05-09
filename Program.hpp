@@ -28,4 +28,5 @@ class Program
         std::shared_ptr<Device> mDevice = nullptr;
         std::shared_ptr<SwapChain> mSwapChain = nullptr;
         std::shared_ptr<Renderer> mRenderer = nullptr;
+        
 };

@@ -86,7 +86,7 @@ void Pipeline::CreateGraphicsPipeline(const std::string shaderPath, WGPUPipeline
     pipelineDesc.multisample.alphaToCoverageEnabled = false;
 
     pipelineDesc.fragment = &fragmentState;
-    pipelineDesc.layout = nullptr;
+    pipelineDesc.layout = layout;
 
     mRenderPipeline = wgpuDeviceCreateRenderPipeline(mDevice->GetDevice(), &pipelineDesc);
 }
