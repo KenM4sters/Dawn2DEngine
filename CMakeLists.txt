@@ -39,3 +39,10 @@ set_target_properties(App PROPERTIES CXX_STANDARD 17)
 # so we automatically copy it (it's called WGPU_RUNTIME_LIB in general)
 # next to the binary.
 target_copy_webgpu_binaries(App)
+
+# Enable AddressSanitizer and UndefinedBehaviorSanitizer
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address,undefined")
+# Link with sanitizer runtime libraries
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address,undefined")
+# Set optimization and debugging flags
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g")

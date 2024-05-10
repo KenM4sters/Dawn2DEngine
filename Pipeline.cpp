@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cassert>
 
+#define ENGINE_DIR "/Users/samuelbrookman/Desktop/Engines/DawnEngine/"
 
 Pipeline::Pipeline(const std::shared_ptr<Device>& device, std::string shaderPath, WGPUPipelineLayout layout, const NativeBufferLayout& bufferLayout) 
     : mDevice{device}
@@ -17,24 +18,29 @@ Pipeline::~Pipeline()
     wgpuShaderModuleRelease(mShaderModule);
 }
 
-std::vector<char> Pipeline::ReadFromFile(const std::string path) 
+std::vector<char> Pipeline::ReadFromFile(const std::string& path) 
 {
-    std::ifstream file{path, std::ios::ate | std::ios::binary}; 
+    std::string enginePath = ENGINE_DIR + path;
+    std::ifstream file{enginePath, std::ios::ate | std::ios::binary}; 
 
     if(!file.is_open()) {
-        throw std::runtime_error("Couldn't open file: " + path);
+        throw std::runtime_error("Couldn't open file: " + enginePath);
     }
 
     size_t fileSize = static_cast<size_t>(file.tellg());
-    std::vector<char> buffer(fileSize);
+    std::cout << fileSize << std::endl;
+    std::vector<char> buffer(fileSize + 1);
 
     file.seekg(0);
     file.read(buffer.data(), fileSize);
+
+    buffer[fileSize] = '\0';
 
     file.close();
 
     return buffer;
 }
+
 
 void Pipeline::CreateGraphicsPipeline(const std::string shaderPath, WGPUPipelineLayout layout, const NativeBufferLayout& bufferLayout) 
 {
@@ -45,7 +51,7 @@ void Pipeline::CreateGraphicsPipeline(const std::string shaderPath, WGPUPipeline
     shaderCodeDesc.chain.next = nullptr;
     shaderCodeDesc.chain.sType = WGPUSType_ShaderModuleWGSLDescriptor;
     shaderDesc.nextInChain = &shaderCodeDesc.chain;
-    shaderCodeDesc.code = reinterpret_cast<const char*>(shaderSrc.data());
+    shaderCodeDesc.code = shaderSrc.data();
     mShaderModule = wgpuDeviceCreateShaderModule(mDevice->GetDevice(), &shaderDesc);
 
     WGPUBlendState blendState{};

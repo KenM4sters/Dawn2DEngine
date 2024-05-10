@@ -18,7 +18,7 @@ class Pipeline
         void Set(WGPURenderPassEncoder encoder) const { wgpuRenderPassEncoderSetPipeline(encoder, mRenderPipeline); }
 
     private:
-        std::vector<char> ReadFromFile(const std::string path);
+        std::vector<char> ReadFromFile(const std::string& path);
 
         void CreateGraphicsPipeline(const std::string shaderPath, WGPUPipelineLayout layout, const NativeBufferLayout& bufferLayout);
 

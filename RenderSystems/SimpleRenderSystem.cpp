@@ -95,6 +95,7 @@ void SimpleRenderSystem::CreatePipeline()
     //
     WGPUBindGroupLayoutEntry cameraLayoutEntry;
     setDefault(&cameraLayoutEntry); 
+    cameraLayoutEntry.nextInChain = nullptr;
     cameraLayoutEntry.binding = 0;
     cameraLayoutEntry.visibility = WGPUShaderStage_Vertex;
     cameraLayoutEntry.buffer.minBindingSize = 144;
@@ -102,6 +103,7 @@ void SimpleRenderSystem::CreatePipeline()
 
     WGPUBindGroupLayoutEntry materialLayoutEntry;
     setDefault(&materialLayoutEntry); 
+    materialLayoutEntry.nextInChain = nullptr;
     materialLayoutEntry.binding = 0;
     materialLayoutEntry.visibility = WGPUShaderStage_Fragment;
     materialLayoutEntry.buffer.minBindingSize = 3*sizeof(float);
@@ -109,6 +111,7 @@ void SimpleRenderSystem::CreatePipeline()
 
     WGPUBindGroupLayoutEntry modelLayoutEntry;
     setDefault(&modelLayoutEntry); 
+    modelLayoutEntry.nextInChain = nullptr;
     modelLayoutEntry.binding = 0;
     modelLayoutEntry.visibility = WGPUShaderStage_Vertex;
     modelLayoutEntry.buffer.minBindingSize = 16*sizeof(float);
@@ -207,6 +210,8 @@ void SimpleRenderSystem::CreatePipeline()
     mUniformBuffers.push_back(materialUBO);
     mUniformBuffers.push_back(modelUBO);
 
+
+    // WGPUPipelineLayout layout = {};
     // Instantiate the pipeline with the pipeline layout.
     //
     mPipeline = std::make_unique<Pipeline>(
