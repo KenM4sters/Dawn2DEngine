@@ -28,6 +28,7 @@ add_executable(App
 	Geometry.cpp
 	Camera.cpp
 	AssetManager.cpp
+	Input.cpp
 	RenderSystems/SimpleRenderSystem.cpp
 )
 

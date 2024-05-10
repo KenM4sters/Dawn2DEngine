@@ -1,10 +1,13 @@
 #include <webgpu/webgpu.h>
 #include <vector>
 #include <cassert>
+#include <utility>
 
 #include "Program.hpp"
 #include "AssetManager.hpp"
 #include "Camera.hpp"
+
+Program* Program::mInstance = nullptr;
 
 /**
  * Utility function to get a WebGPU adapter, so that
@@ -63,18 +66,19 @@ WGPUAdapter requestAdapter(WGPUInstance instance, WGPURequestAdapterOptions cons
 
 Program::Program(uint32_t w, uint32_t h, const char* label) 
 {
-    AssetManager::SubmitCamera(new OrthographicCamera({0.0f, 0.0f, 0.5f}, 100.0, 100.0));
-    
+
+    mInstance = this;
+
     mWindow = std::make_shared<Window>(w, h, label);
 
-    // Check that a gpu adapter is available (err is thrown if not) and pass it to the Device.
+    // Check that a gpu adapter is available (err is thrown if not) and pass it to the device.
     AdapterPayload p = RequestAndInspectAdapter();
-
-    mDevice = std::make_shared<Device>(p.Adapter);
-
+    mDevice = std::make_shared<Device>(std::move(p.Adapter));
     mSwapChain = std::make_shared<SwapChain>(mDevice->GetDevice(), p.Surface);
+    
+    AssetManager::SubmitCamera(new OrthographicCamera({0.0f, 0.0f, 0.5f}, mWindow->GetWindowWidth(), mWindow->GetWindowHeight()));
 
-    mRenderer = std::make_shared<Renderer>(mDevice);
+    mRenderer = std::make_unique<Renderer>(mDevice);
 
 }
 

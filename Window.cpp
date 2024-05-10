@@ -28,12 +28,27 @@ Window::Window(uint32_t w, uint32_t h, const char* label)
     
 }
 
-
-
 Window::~Window() 
 {
     glfwDestroyWindow(mWindow);
     glfwTerminate();
+}
+
+const std::pair<int, int> Window::GetWindowDimensions() const 
+{
+    return {mWidth, mHeight};
+}   
+
+const int Window::GetWindowWidth() const 
+{
+    auto[x, y] = GetWindowDimensions();
+    return x;
+} 
+
+const int Window::GetWindowHeight() const 
+{
+    auto[x, y] = GetWindowDimensions();
+    return y;
 }
 
 void Window::OnWindowCloseCallback(GLFWwindow* window) 

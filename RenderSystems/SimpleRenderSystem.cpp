@@ -39,8 +39,8 @@ SimpleRenderSystem::~SimpleRenderSystem()
 void SimpleRenderSystem::UpdateBuffers() 
 {
     mModel = glm::mat4(1.0f);
-    mModel = glm::translate(mModel, glm::vec3(0.0f, 0.0f, 0.0f));
-    mModel = glm::scale(mModel, glm::vec3(10.0f, 10.0f, 1.0f));
+    mModel = glm::translate(mModel, glm::vec3(375.0f, 275.0f, 0.0f));
+    mModel = glm::scale(mModel, glm::vec3(50.0f, 50.0f, 1.0f));
 
     wgpuQueueWriteBuffer(mDevice->GetQueue(), mUniformBuffers[0].UniformBuffer, 0, &AssetManager::mCamera->GetProjectionMatrix(), 16*sizeof(float));
     wgpuQueueWriteBuffer(mDevice->GetQueue(), mUniformBuffers[0].UniformBuffer, 16*sizeof(float), &AssetManager::mCamera->GetViewMatrix(), 16*sizeof(float));
