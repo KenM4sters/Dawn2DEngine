@@ -53,10 +53,13 @@ void SimpleRenderSystem::UpdateBuffers()
 void SimpleRenderSystem::Run(const WGPURenderPassEncoder encoder) 
 {
     mPipeline->Set(encoder);
+
     wgpuRenderPassEncoderSetBindGroup(encoder, 0, mUniformBuffers[0].BindGroup, 0, nullptr);
     wgpuRenderPassEncoderSetBindGroup(encoder, 1, mUniformBuffers[1].BindGroup, 0, nullptr);
     wgpuRenderPassEncoderSetBindGroup(encoder, 2, mUniformBuffers[2].BindGroup, 0, nullptr);
+
     wgpuRenderPassEncoderSetVertexBuffer(encoder, 0, mGeometry->GetVertexBuffer(), 0, mGeometry->GetVertices().size()*sizeof(float));
+    
     wgpuRenderPassEncoderDraw(encoder, 6, 1, 0, 0);
 }
 
@@ -194,6 +197,7 @@ void SimpleRenderSystem::CreatePipeline()
 
 
     // Create the pipeline layout
+    //
     WGPUPipelineLayoutDescriptor layoutDesc{};
     layoutDesc.nextInChain = nullptr;
     layoutDesc.bindGroupLayoutCount = 3;
@@ -211,7 +215,6 @@ void SimpleRenderSystem::CreatePipeline()
     mUniformBuffers.push_back(modelUBO);
 
 
-    // WGPUPipelineLayout layout = {};
     // Instantiate the pipeline with the pipeline layout.
     //
     mPipeline = std::make_unique<Pipeline>(

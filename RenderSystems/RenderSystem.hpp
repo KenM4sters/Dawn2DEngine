@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
+#include <unordered_map>
 #include "../Device.hpp"
+#include "../Pipeline.hpp"
 
 class RenderSystem 
 {
@@ -21,5 +23,8 @@ class RenderSystem
     protected:
 
         const std::shared_ptr<Device>& mDevice;
+
+        const std::unordered_map<std::string, Pipeline*> mPipelines{};
+        
 
 };
