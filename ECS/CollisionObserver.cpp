@@ -52,14 +52,13 @@ void CollisionObserver::Run()
                 if(CheckCollision(v[i], v[j])) 
                 {
                     CollisionDirection dir = CalculateCollisionDirection(v[i], v[j]);
-                    std::cout << dir << std::endl;
 
                     switch(dir) 
                     {
-                        case CollisionDirection::ABOVE: v[i].velocity.y *= -1; break;
-                        case CollisionDirection::BELOW: v[i].velocity.y *= -1; break;
-                        case CollisionDirection::LEFT:  v[i].velocity.x *= -1; break;
-                        case CollisionDirection::RIGHT: v[i].velocity.x *= -1; break;
+                        case CollisionDirection::ABOVE: v[i]->velocity.y *= -1; break;
+                        case CollisionDirection::BELOW: v[i]->velocity.y *= -1; break;
+                        case CollisionDirection::LEFT:  v[i]->velocity.x *= -1; break;
+                        case CollisionDirection::RIGHT: v[i]->velocity.x *= -1; break;
                     }
                 } 
             }
@@ -67,7 +66,7 @@ void CollisionObserver::Run()
     }
 }
 
-CollisionDirection CollisionObserver::CalculateCollisionDirection(const Entity& ent1, const Entity& ent2) const 
+CollisionDirection CollisionObserver::CalculateCollisionDirection(const Entity* ent1, const Entity* ent2) const 
 {
     std::stack<float> closestAngle = std::stack<float>{};
     closestAngle.push(360);
@@ -75,7 +74,7 @@ CollisionDirection CollisionObserver::CalculateCollisionDirection(const Entity& 
 
     for(int i = 0; i < 4; i++) 
     {
-        float angle = glm::dot(glm::normalize(ent1.world_transform.position), glm::normalize(compass[i] + ent2.world_transform.position));
+        float angle = glm::dot(glm::normalize(ent1->world_transform.position), glm::normalize(compass[i] + ent2->world_transform.position));
         if(angle < closestAngle.top()) 
         {
             closestAngle.push(angle);
@@ -93,23 +92,23 @@ void CollisionObserver::ClearAndAssignGrids()
 {
     mSpatialGrid.clear();
 
-    for(const auto& ent : World::GetEntities()) 
+    for(auto& ent : World::GetEntities()) 
     {
-        AssignGridToEntity(ent);
+        AssignGridToEntity(&ent);
     }
 }
 
-void CollisionObserver::AssignGridToEntity(const Entity& ent) 
+void CollisionObserver::AssignGridToEntity(Entity* ent) 
 {
-    const int cXcell = round((float)ent.world_transform.position.x / mGridWidth);
-    const int cYcell = round((float)ent.world_transform.position.y / mGridHeight);
+    const int cXcell = round((float)ent->world_transform.position.x / mGridWidth);
+    const int cYcell = round((float)ent->world_transform.position.y / mGridHeight);
 
     const std::string cell = std::to_string(cXcell) + std::to_string(cYcell);
 
     AddEntityToCells(cell, ent);  
 }
 
-void CollisionObserver::AddEntityToCells(const std::string& cell, const Entity& ent) 
+void CollisionObserver::AddEntityToCells(const std::string& cell, Entity* ent) 
 {
     if(mSpatialGrid.count(cell)) 
     {
@@ -117,20 +116,20 @@ void CollisionObserver::AddEntityToCells(const std::string& cell, const Entity& 
     }
     else 
     {
-        mSpatialGrid[cell] = std::vector<Entity>{ent};
+        mSpatialGrid[cell] = std::vector<Entity*>{ent};
     }
 }
 
-bool CollisionObserver::CheckCollision(const Entity& ent1, const Entity& ent2) const 
+bool CollisionObserver::CheckCollision(const Entity* ent1, const Entity* ent2) const 
 {
-    const int w1 = ent1.bounds.width;
-    const int w2 = ent2.bounds.width;
+    const int w1 = ent1->bounds.width;
+    const int w2 = ent2->bounds.width;
 
-    const int h1 = ent1.bounds.height;
-    const int h2 = ent2.bounds.height;
+    const int h1 = ent1->bounds.height;
+    const int h2 = ent2->bounds.height;
 
-    const glm::vec3 p1 = ent1.world_transform.position;
-    const glm::vec3 p2 = ent2.world_transform.position;
+    const glm::vec3 p1 = ent1->world_transform.position;
+    const glm::vec3 p2 = ent2->world_transform.position;
 
     // collision x-axis?
     bool collisionX = p1.x + h1 >= p2.x &&

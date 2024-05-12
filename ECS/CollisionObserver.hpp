@@ -31,15 +31,15 @@ public:
 private:
     void ClearAndAssignGrids();   
 
-    void AssignGridToEntity(const Entity& ent);
+    void AssignGridToEntity(Entity* ent);
 
-    void AddEntityToCells(const std::string& cell, const Entity& ent);
+    void AddEntityToCells(const std::string& cell, Entity* ent);
 
-    bool CheckCollision(const Entity& ent1, const Entity& ent2) const;
+    bool CheckCollision(const Entity* ent1, const Entity* ent2) const;
 
-    CollisionDirection CalculateCollisionDirection(const Entity& ent1, const Entity& ent2) const; 
+    CollisionDirection CalculateCollisionDirection(const Entity* ent1, const Entity* ent2) const; 
 
-    std::unordered_map<std::string, std::vector<Entity>> mSpatialGrid;
+    std::unordered_map<std::string, std::vector<Entity*>> mSpatialGrid;
 
     std::vector<GridCell> mCells{};
 

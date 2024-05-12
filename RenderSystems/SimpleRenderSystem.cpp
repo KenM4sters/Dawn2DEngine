@@ -75,7 +75,7 @@ void SimpleRenderSystem::Run(const WGPURenderPassEncoder encoder)
         wgpuRenderPassEncoderSetVertexBuffer(encoder, 0, renderable.geometry->GetVertexBuffer(), 0, renderable.geometry->GetVertices().size()*sizeof(float));
         
         wgpuRenderPassEncoderDraw(encoder, 6, 1, 0, 0);
-
+    
         ent.velocity = glm::vec3{0.0f};
         ent.acceleration = glm::vec3{0.0f};
     }
