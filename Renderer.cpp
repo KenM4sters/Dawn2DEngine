@@ -11,7 +11,7 @@ Renderer::~Renderer()
 
 }
 
-void Renderer::PrepareSystems() const 
+void Renderer::PrepareRenderSystem() const 
 {
     mSystem->UpdateBuffers();
 }

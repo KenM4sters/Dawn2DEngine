@@ -4,8 +4,8 @@
 #include <utility>
 
 #include "Program.hpp"
-#include "AssetManager.hpp"
 #include "Camera.hpp"
+#include "ECS/PlayerController.hpp"
 
 Program* Program::mInstance = nullptr;
 
@@ -75,10 +75,11 @@ Program::Program(uint32_t w, uint32_t h, const char* label)
     AdapterPayload p = RequestAndInspectAdapter();
     mDevice = std::make_shared<Device>(std::move(p.Adapter));
     mSwapChain = std::make_shared<SwapChain>(mDevice->GetDevice(), p.Surface);
-    
-    AssetManager::SubmitCamera(new OrthographicCamera({0.0f, 0.0f, 0.5f}, mWindow->GetWindowWidth(), mWindow->GetWindowHeight()));
+        
+    mWorld = std::make_unique<World>(mWindow->GetWindowWidth(), mWindow->GetWindowHeight());
 
     mRenderer = std::make_unique<Renderer>(mDevice);
+
 
 }
 
@@ -92,24 +93,30 @@ void Program::Run() const
     while(!mWindow->WindowShouldClose()) 
     {
         glfwPollEvents();
+
+        mWorld->RunSystems();
         
-        mRenderer->PrepareSystems();
-        
+        // Since commands are loaded asynchronously into the command buffer, any changes
+        // made to buffers (such as uniform buffers) won't be reflected in the command queue
+        // once the render pass has begun. 
+        // Therefore, we have this "PrepareRenderSystem" functions that updates buffers before the
+        // render pass for this frame has begun. 
+        mRenderer->PrepareRenderSystem();
+
         // Get the current texture view that we'll render to from the swap chain and
         // and set up the render pass and color attachment configurations.
         //
         WGPUTextureView nextTexture = wgpuSwapChainGetCurrentTextureView(mSwapChain->GetSwapChain()); 
-        assert(nextTexture);
+        assert(nextTexture); // If there texture is null, then we can't render our World to anything...
 
         mRenderer->Run(nextTexture);
+
 
         wgpuDeviceTick(mDevice->GetDevice());
 
         // Finally tell the swapchain to present our texture to the screen.
         wgpuSwapChainPresent(mSwapChain->GetSwapChain());
     }
-
-    AssetManager::Delete();
 }
 
 AdapterPayload Program::RequestAndInspectAdapter() const 
@@ -145,13 +152,6 @@ AdapterPayload Program::RequestAndInspectAdapter() const
 
     // Call the function a second time, with a non-null return address
     wgpuAdapterEnumerateFeatures(adapter, features.data());
-
-    std::cout << "Adapter features:" << std::endl;
-
-    for (auto f : features) 
-    {
-        std::cout << " - " << f << std::endl;
-    }
 
     return {adapter, surface};
 

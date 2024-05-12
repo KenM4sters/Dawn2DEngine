@@ -27,8 +27,10 @@ add_executable(App
 	Buffer.cpp
 	Geometry.cpp
 	Camera.cpp
-	AssetManager.cpp
 	Input.cpp
+	World.cpp
+	ECS/CollisionObserver.cpp
+	ECS/Physics.cpp
 	RenderSystems/SimpleRenderSystem.cpp
 )
 

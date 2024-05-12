@@ -4,6 +4,9 @@
 #include "Device.hpp"
 #include "SwapChain.hpp"
 #include "Renderer.hpp"
+#include "World.hpp"
+#include "ECS/Systems.hpp"
+
 
 typedef struct AdapterPayload 
 {
@@ -35,6 +38,7 @@ class Program
         std::shared_ptr<Device> mDevice = nullptr;
         std::shared_ptr<SwapChain> mSwapChain = nullptr;
         std::unique_ptr<Renderer> mRenderer = nullptr;
+        std::unique_ptr<World> mWorld = nullptr;
 
         static Program* mInstance;
         

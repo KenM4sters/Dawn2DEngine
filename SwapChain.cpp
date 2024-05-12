@@ -13,7 +13,6 @@ SwapChain::SwapChain(WGPUDevice device, WGPUSurface surface)
     swapChainDesc.presentMode = WGPUPresentMode_Fifo;
 
     mSwapChain = wgpuDeviceCreateSwapChain(device, surface, &swapChainDesc);
-    std::cout << "Swapchain: " << mSwapChain << std::endl;
 }
 
 SwapChain::~SwapChain() 

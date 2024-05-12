@@ -1,7 +1,8 @@
 #include "SimpleRenderSystem.hpp"
-#include "../AssetManager.hpp"
+#include "../World.hpp"
 
-void setDefault(WGPUBindGroupLayoutEntry* bindGroupEntry) {
+void setDefault(WGPUBindGroupLayoutEntry* bindGroupEntry) 
+{
     bindGroupEntry->buffer.nextInChain = nullptr;
     bindGroupEntry->buffer.type = WGPUBufferBindingType_Undefined;
     bindGroupEntry->buffer.hasDynamicOffset = false;
@@ -21,49 +22,66 @@ void setDefault(WGPUBindGroupLayoutEntry* bindGroupEntry) {
 }
 
 SimpleRenderSystem::SimpleRenderSystem(const std::shared_ptr<Device>& device) 
-    : RenderSystem(device)
+    : RenderSystem(device), mEntities(World::GetEntities())
 {
-    mGeometry = new Geometry(mDevice);
-    CreatePipeline();
-    wgpuQueueWriteBuffer(mDevice->GetQueue(), mGeometry->GetVertexBuffer(), 0, mGeometry->GetVertices().data(), mGeometry->GetVertices().size()*sizeof(float));
+    for(auto& ent : mEntities) 
+    {
+        // Geometry
+        ent.renderable.geometry = new Geometry(device);
 
+        SetDefaultRenderingData(&ent);
+
+        wgpuQueueWriteBuffer(mDevice->GetQueue(), ent.renderable.geometry->GetVertexBuffer(), 0, ent.renderable.geometry->GetVertices().data(), ent.renderable.geometry->GetVertices().size()*sizeof(float));
+    }
 }
 
 
 SimpleRenderSystem::~SimpleRenderSystem() 
 {
-    delete mGeometry;
 }
  
 
 void SimpleRenderSystem::UpdateBuffers() 
 {
-    mModel = glm::mat4(1.0f);
-    mModel = glm::translate(mModel, glm::vec3(375.0f, 275.0f, 0.0f));
-    mModel = glm::scale(mModel, glm::vec3(50.0f, 50.0f, 1.0f));
 
-    wgpuQueueWriteBuffer(mDevice->GetQueue(), mUniformBuffers[0].UniformBuffer, 0, &AssetManager::mCamera->GetProjectionMatrix(), 16*sizeof(float));
-    wgpuQueueWriteBuffer(mDevice->GetQueue(), mUniformBuffers[0].UniformBuffer, 16*sizeof(float), &AssetManager::mCamera->GetViewMatrix(), 16*sizeof(float));
-    wgpuQueueWriteBuffer(mDevice->GetQueue(), mUniformBuffers[0].UniformBuffer, 32*sizeof(float), &AssetManager::mCamera->GetPosition(), 3*sizeof(float));
+    for(auto& ent : mEntities) 
+    {
+        const auto& uniforms = ent.renderable.uniforms;
 
-    wgpuQueueWriteBuffer(mDevice->GetQueue(), mUniformBuffers[1].UniformBuffer, 0, &mColor, 3*sizeof(float));
-    wgpuQueueWriteBuffer(mDevice->GetQueue(), mUniformBuffers[2].UniformBuffer, 0, &mModel, 16*sizeof(float));
+        ent.world_transform.model_matrix = glm::mat4(1.0f);
+        ent.world_transform.model_matrix = glm::translate(ent.world_transform.model_matrix, ent.world_transform.position);
+        ent.world_transform.model_matrix = glm::scale(ent.world_transform.model_matrix, glm::vec3(ent.bounds.width , ent.bounds.height, 1.0f));
+
+        wgpuQueueWriteBuffer(mDevice->GetQueue(), uniforms[0].UniformBuffer, 0, &World::GetCamera()->GetProjectionMatrix(), 16*sizeof(float));
+        wgpuQueueWriteBuffer(mDevice->GetQueue(), uniforms[0].UniformBuffer, 16*sizeof(float), &World::GetCamera()->GetViewMatrix(), 16*sizeof(float));
+        wgpuQueueWriteBuffer(mDevice->GetQueue(), uniforms[0].UniformBuffer, 32*sizeof(float), &World::GetCamera()->GetPosition(), 3*sizeof(float));
+
+        wgpuQueueWriteBuffer(mDevice->GetQueue(), uniforms[1].UniformBuffer, 0, &ent.color, 3*sizeof(float));
+        wgpuQueueWriteBuffer(mDevice->GetQueue(), uniforms[2].UniformBuffer, 0, &ent.world_transform.model_matrix, 16*sizeof(float));
+    }
 }
 
 void SimpleRenderSystem::Run(const WGPURenderPassEncoder encoder) 
 {
     mPipeline->Set(encoder);
 
-    wgpuRenderPassEncoderSetBindGroup(encoder, 0, mUniformBuffers[0].BindGroup, 0, nullptr);
-    wgpuRenderPassEncoderSetBindGroup(encoder, 1, mUniformBuffers[1].BindGroup, 0, nullptr);
-    wgpuRenderPassEncoderSetBindGroup(encoder, 2, mUniformBuffers[2].BindGroup, 0, nullptr);
+    for(auto& ent : mEntities) 
+    {
+        const auto& renderable = ent.renderable;
+        wgpuRenderPassEncoderSetBindGroup(encoder, 0, renderable.uniforms[0].BindGroup, 0, nullptr);
+        wgpuRenderPassEncoderSetBindGroup(encoder, 1, renderable.uniforms[1].BindGroup, 0, nullptr);
+        wgpuRenderPassEncoderSetBindGroup(encoder, 2, renderable.uniforms[2].BindGroup, 0, nullptr);
 
-    wgpuRenderPassEncoderSetVertexBuffer(encoder, 0, mGeometry->GetVertexBuffer(), 0, mGeometry->GetVertices().size()*sizeof(float));
-    
-    wgpuRenderPassEncoderDraw(encoder, 6, 1, 0, 0);
+        wgpuRenderPassEncoderSetVertexBuffer(encoder, 0, renderable.geometry->GetVertexBuffer(), 0, renderable.geometry->GetVertices().size()*sizeof(float));
+        
+        wgpuRenderPassEncoderDraw(encoder, 6, 1, 0, 0);
+
+        ent.velocity = glm::vec3{0.0f};
+        ent.acceleration = glm::vec3{0.0f};
+    }
 }
 
-void SimpleRenderSystem::CreatePipeline() 
+void SimpleRenderSystem::SetDefaultRenderingData(Entity* ent) 
 {
 
     // Uniform Buffers.
@@ -91,7 +109,6 @@ void SimpleRenderSystem::CreatePipeline()
     modelDesc.usage = WGPUBufferUsage_CopyDst | WGPUBufferUsage_Uniform;
     modelDesc.mappedAtCreation = false;
     WGPUBuffer modelBuffer = wgpuDeviceCreateBuffer(mDevice->GetDevice(), &modelDesc);
-
 
 
     // Bind Group Layout Entries.
@@ -146,7 +163,6 @@ void SimpleRenderSystem::CreatePipeline()
     modelBindGroupEntry.size = modelDesc.size;
 
 
-
     // Bind Group Layout
     //
     WGPUBindGroupLayoutDescriptor cameraLayoutDesc{};
@@ -196,31 +212,29 @@ void SimpleRenderSystem::CreatePipeline()
     WGPUBindGroup modelBindGroup = wgpuDeviceCreateBindGroup(mDevice->GetDevice(), &modelBindGroupDesc);
 
 
-    // Create the pipeline layout
+    // Push data into the entity's renderable member.
     //
-    WGPUPipelineLayoutDescriptor layoutDesc{};
-    layoutDesc.nextInChain = nullptr;
-    layoutDesc.bindGroupLayoutCount = 3;
-    layoutDesc.bindGroupLayouts = bindGroupLayouts.data();
-    WGPUPipelineLayout layout = wgpuDeviceCreatePipelineLayout(mDevice->GetDevice(), &layoutDesc);
+    ent->renderable.uniforms.push_back({cameraBuffer, cameraBindGroup});
+    ent->renderable.uniforms.push_back({materialBuffer, materialBindGroup});
+    ent->renderable.uniforms.push_back({modelBuffer, modelBindGroup});
 
-    // Push the buffers and bind groups into the member container for writing each frame.
-    //
-    UniformBufferObject cameraUBO = {cameraBuffer, cameraBindGroup};
-    UniformBufferObject materialUBO = {materialBuffer, materialBindGroup};
-    UniformBufferObject modelUBO = {modelBuffer, modelBindGroup};
+    if(!mPipeline) 
+    {
+        // Create the pipeline layout
+        //
+        WGPUPipelineLayoutDescriptor layoutDesc{};
+        layoutDesc.nextInChain = nullptr;
+        layoutDesc.bindGroupLayoutCount = 3;
+        layoutDesc.bindGroupLayouts = bindGroupLayouts.data();
+        WGPUPipelineLayout layout = wgpuDeviceCreatePipelineLayout(mDevice->GetDevice(), &layoutDesc);
 
-    mUniformBuffers.push_back(cameraUBO);
-    mUniformBuffers.push_back(materialUBO);
-    mUniformBuffers.push_back(modelUBO);
-
-
-    // Instantiate the pipeline with the pipeline layout.
-    //
-    mPipeline = std::make_unique<Pipeline>(
-        mDevice,
-        "Shaders/Simple.wgsl",
-        layout,
-        mGeometry->GetNativeBufferLayout()
-    );
+        // Instantiate the pipeline with the pipeline layout.
+        //
+        mPipeline = std::make_unique<Pipeline>(
+            mDevice,
+            "Shaders/Simple.wgsl",
+            layout,
+            mEntities[0].renderable.geometry->GetNativeBufferLayout()
+        );
+    }
 }

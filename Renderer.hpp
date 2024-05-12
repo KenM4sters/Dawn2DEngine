@@ -13,7 +13,7 @@ class Renderer
         
         ~Renderer();
 
-        void PrepareSystems() const;
+        void PrepareRenderSystem() const;
 
         void Run(const WGPUTextureView nextTexture) const;
         
