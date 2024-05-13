@@ -1,7 +1,7 @@
 #pragma once
 #include <webgpu/webgpu.hpp>
 #include "Buffer.hpp"
-#include "Device.hpp"
+#include "../../Program/Device.hpp"
 
 struct NativeBufferLayout 
 {

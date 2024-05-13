@@ -1,6 +1,6 @@
 #pragma once
 #include <glm/glm.hpp>
-#include "../Geometry.hpp"
+#include "../Graphics/Buffers/Geometry.hpp"
 
 using EntityID = uint16_t;
 

@@ -1,8 +1,8 @@
 #pragma once
 #include <iostream>
 #include <unordered_map>
-#include "../Device.hpp"
-#include "../Pipeline.hpp"
+#include "../../Program/Device.hpp"
+#include "../Pipelines/Pipeline.hpp"
 
 class RenderSystem 
 {

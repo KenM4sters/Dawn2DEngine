@@ -1,5 +1,5 @@
 #include "SimpleRenderSystem.hpp"
-#include "../World.hpp"
+#include "../../World/World.hpp"
 
 void setDefault(WGPUBindGroupLayoutEntry* bindGroupEntry) 
 {
@@ -235,7 +235,7 @@ void SimpleRenderSystem::SetDefaultRenderingData(Entity* ent)
         //
         mPipeline = std::make_unique<Pipeline>(
             mDevice,
-            "Shaders/Simple.wgsl",
+            "Sources/Shaders/Simple.wgsl",
             layout,
             mEntities[0].renderable.geometry->GetNativeBufferLayout()
         );

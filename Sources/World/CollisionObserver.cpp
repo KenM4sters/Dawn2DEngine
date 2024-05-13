@@ -4,7 +4,7 @@
 #include <algorithm>
 #include "CollisionObserver.hpp"
 #include "Entity.hpp"
-#include "../Events/Event.hpp"
+#include "../Program/Events/Event.hpp"
 
 
 static glm::vec3 compass[] = 

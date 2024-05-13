@@ -6,7 +6,8 @@
                 "${workspaceFolder}/**",
                 "/Users/samuelbrookman/Desktop/Engines/DawnEngine/extern/glfw/include/**",
                 "/Users/samuelbrookman/Desktop/Engines/DawnEngine/extern/glfw3webgpu/**",
-                "/Users/samuelbrookman/Desktop/Engines/DawnEngine/extern/**"
+                "/Users/samuelbrookman/Desktop/Engines/DawnEngine/extern/**",
+                "/Users/samuelbrookman/Desktop/Engines/DawnEngine/Sources/**",
             ],
             "defines": [],
             "macFrameworkPath": [

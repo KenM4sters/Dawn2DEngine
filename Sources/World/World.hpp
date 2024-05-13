@@ -1,8 +1,8 @@
 #pragma once
 #include <iostream>
-#include "ECS/Entity.hpp"
-#include "ECS/Systems.hpp"
-#include "../Camera.hpp"
+#include "./Entity.hpp"
+#include "./Systems.hpp"
+#include "../Graphics/Camera.hpp"
 
 class World 
 {

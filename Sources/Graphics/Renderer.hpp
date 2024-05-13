@@ -1,9 +1,9 @@
 #pragma once
+#include <iostream>
 #include <glfw3webgpu.h>
 #include <webgpu/webgpu.h>
-#include "Device.hpp"
-#include <iostream>
-#include "RenderSystems/SimpleRenderSystem.hpp"
+#include "../Program/Device.hpp"
+#include "./Systems/SimpleRenderSystem.hpp"
 
 class Renderer 
 {

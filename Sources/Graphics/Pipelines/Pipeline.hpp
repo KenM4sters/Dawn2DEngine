@@ -4,8 +4,8 @@
 #include <string>
 #include <vector>
 
-#include "Device.hpp"
-#include "Geometry.hpp"
+#include "../../Program/Device.hpp"
+#include "../Buffers/Geometry.hpp"
 
 
 class Pipeline 

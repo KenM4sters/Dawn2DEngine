@@ -1,5 +1,5 @@
 #include "Physics.hpp"
-#include "../World.hpp"
+#include "World.hpp"
 
 Physics::Physics() 
 {

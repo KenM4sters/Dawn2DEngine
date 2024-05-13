@@ -2,8 +2,8 @@
 #include <iostream>
 #include <GLFW/glfw3.h>
 #include "Systems.hpp"
-#include "../World.hpp"
-#include "../Input.hpp"
+#include "./World.hpp"
+#include "../Program/Input.hpp"
 
 class PlayerController : public ISystem 
 {

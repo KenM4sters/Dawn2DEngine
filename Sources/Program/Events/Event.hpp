@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "../ECS/Entity.hpp"
+#include "../../World/Entity.hpp"
 
 class IEvent 
 {

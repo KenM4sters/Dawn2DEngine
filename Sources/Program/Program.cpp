@@ -4,8 +4,6 @@
 #include <utility>
 
 #include "Program.hpp"
-#include "Camera.hpp"
-#include "ECS/PlayerController.hpp"
 
 Program* Program::mInstance = nullptr;
 

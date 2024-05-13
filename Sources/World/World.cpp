@@ -1,9 +1,9 @@
 #include <webgpu/webgpu.hpp>
 #include "World.hpp"
-#include "ECS/PlayerController.hpp"
-#include "ECS/CollisionObserver.hpp"
-#include "ECS/CollisionSystem.hpp"
-#include "ECS/Physics.hpp"
+#include "PlayerController.hpp"
+#include "CollisionObserver.hpp"
+#include "CollisionSystem.hpp"
+#include "Physics.hpp"
 
 std::vector<Entity> World::mEntities = {};
 std::shared_ptr<OrthographicCamera> World::mCamera = nullptr;

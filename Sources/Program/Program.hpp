@@ -3,9 +3,8 @@
 #include "Window.hpp"
 #include "Device.hpp"
 #include "SwapChain.hpp"
-#include "Renderer.hpp"
-#include "World.hpp"
-#include "ECS/Systems.hpp"
+#include "../Graphics/Renderer.hpp"
+#include "../World/World.hpp"
 
 
 typedef struct AdapterPayload 

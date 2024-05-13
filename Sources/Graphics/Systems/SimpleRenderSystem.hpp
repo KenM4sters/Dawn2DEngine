@@ -1,10 +1,10 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include "RenderSystem.hpp"
-#include "../Pipeline.hpp"
-#include "../Geometry.hpp"
-#include "../ECS/Entity.hpp"
+#include "./RenderSystem.hpp"
+#include "../Pipelines/Pipeline.hpp"
+#include "../../World/Entity.hpp"
+#include "../Buffers/Geometry.hpp"
 
 
 

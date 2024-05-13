@@ -1,5 +1,5 @@
-#include "Systems.hpp"
-#include "../Events/Event.hpp"
+#include "./Systems.hpp"
+#include "../Program/Events/Event.hpp"
 
 class CollisionSystem : public ISystem 
 {

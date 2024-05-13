@@ -1,7 +1,7 @@
 #pragma once
 #include <unordered_map>
 #include "Systems.hpp"
-#include "../World.hpp"
+#include "./World.hpp"
 
 struct GridCell 
 {

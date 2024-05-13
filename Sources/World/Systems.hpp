@@ -1,5 +1,5 @@
 #pragma once
-#include "../Events/Bus.hpp"
+#include "../Program/Events/Bus.hpp"
 
 class ISystem
 {
@@ -11,6 +11,7 @@ public:
             mEventBus = std::make_shared<EventBus>();
         }
     }
+    
     virtual ~ISystem() {}
 
     virtual void Run() = 0;

@@ -18,21 +18,21 @@ add_subdirectory(extern/glm)
 
 add_executable(App
 	main.cpp
-	Program.cpp
-	Window.cpp
-	Device.cpp
-	SwapChain.cpp
-	Renderer.cpp
-	Pipeline.cpp
-	Buffer.cpp
-	Geometry.cpp
-	Camera.cpp
-	Input.cpp
-	World.cpp
-	ECS/Systems.cpp
-	ECS/CollisionObserver.cpp
-	ECS/Physics.cpp
-	RenderSystems/SimpleRenderSystem.cpp
+	Sources/Program/Program.cpp
+	Sources/Program/Window.cpp
+	Sources/Program/Device.cpp
+	Sources/Program/SwapChain.cpp
+	Sources/Program/Input.cpp
+	Sources/Graphics/Renderer.cpp
+	Sources/Graphics/Pipelines/Pipeline.cpp
+	Sources/Graphics/Buffers/Buffer.cpp
+	Sources/Graphics/Buffers/Geometry.cpp
+	Sources/Graphics/Camera.cpp
+	Sources/Graphics/Systems/SimpleRenderSystem.cpp
+	Sources/World/World.cpp
+	Sources/World/Systems.cpp
+	Sources/World/CollisionObserver.cpp
+	Sources/World/Physics.cpp
 )
 
 target_link_libraries(App PRIVATE glfw webgpu glfw3webgpu glm)
