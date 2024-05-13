@@ -5,16 +5,16 @@ project(
 	LANGUAGES CXX C
 )
 
-add_subdirectory(extern/glfw)
+add_subdirectory(External/glfw)
 
 # Include webgpu directory, to define the 'webgpu' target.
-add_subdirectory(extern/webgpu)
+add_subdirectory(External/webgpu)
 
 # Utility function for getting the window surface (platform agnostically), courtesy of Ellie Michel (src: https://eliemichel.github.io/LearnWebGPU/getting-started/the-adapter.html).
-add_subdirectory(extern/glfw3webgpu)
+add_subdirectory(External/glfw3webgpu)
 
 # Math.
-add_subdirectory(extern/glm)
+add_subdirectory(External/glm)
 
 add_executable(App
 	main.cpp

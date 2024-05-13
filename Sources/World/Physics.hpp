@@ -1,6 +1,6 @@
 #include "Systems.hpp"
 
-class Physics : public ISystem
+class Physics : public IEntitySystem
 {
 public:
     Physics();

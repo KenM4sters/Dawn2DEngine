@@ -5,7 +5,7 @@
 #include "./World.hpp"
 #include "../Program/Input.hpp"
 
-class PlayerController : public ISystem 
+class PlayerController : public IEntitySystem 
 {
 public:
     PlayerController() {}

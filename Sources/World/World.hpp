@@ -23,7 +23,8 @@ private:
       
     void AddEntity(const Entity ent);
 
-    std::vector<ISystem*> mSystems{};
+    std::vector<IEntitySystem*> mEntitySystems{};
+    std::vector<IEventHandler*> mEventHandlers{};
 
     static std::vector<Entity> mEntities;
     static std::shared_ptr<OrthographicCamera> mCamera;

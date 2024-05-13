@@ -17,7 +17,7 @@ enum CollisionDirection
     RIGHT
 };
 
-class CollisionObserver : public ISystem 
+class CollisionObserver : public IEntitySystem 
 {
 public:
     CollisionObserver(uint32_t width, uint32_t height);

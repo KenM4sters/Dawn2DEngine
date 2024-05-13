@@ -1,18 +1,16 @@
-#include "./Systems.hpp"
+#include "Systems.hpp"
 #include "../Program/Events/Event.hpp"
 
-class CollisionSystem : public ISystem 
+class CollisionHandler : public IEventHandler 
 {
 public:
-    CollisionSystem() 
+    CollisionHandler() 
     {
-        mEventBus->Subscribe(this, &CollisionSystem::OnCollisionEvent);
+        mEventBus->Subscribe(this, &CollisionHandler::OnCollisionEvent);
     }
 
     void OnCollisionEvent(CollisionEvent* collision) 
     {
         collision->mEntityA->flags &= ~Entity_Flags::ACTIVE;
     }
-
-    void Run() override {}
 };

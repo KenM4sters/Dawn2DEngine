@@ -2,7 +2,7 @@
 #include "World.hpp"
 #include "PlayerController.hpp"
 #include "CollisionObserver.hpp"
-#include "CollisionSystem.hpp"
+#include "CollisionHandler.hpp"
 #include "Physics.hpp"
 
 std::vector<Entity> World::mEntities = {};
@@ -20,6 +20,16 @@ World::~World()
     {
         delete ent.renderable.geometry;
     }
+
+    for(const auto& system : mEntitySystems) 
+    {
+        delete system;
+    }
+
+    for(const auto& handler : mEventHandlers) 
+    {
+        delete handler;
+    }
 }
 
 void World::Init(uint32_t width, uint32_t height) 
@@ -27,20 +37,24 @@ void World::Init(uint32_t width, uint32_t height)
 
     // Systems
     //
-    ISystem* playerController = new PlayerController();
-    ISystem* collisionObserver = new CollisionObserver(width, height);
-    ISystem* physics = new Physics();
+    IEntitySystem* playerController = new PlayerController();
+    IEntitySystem* collisionObserver = new CollisionObserver(width, height);
+    IEntitySystem* physics = new Physics();
+    mEntitySystems.push_back(playerController);
+    mEntitySystems.push_back(collisionObserver);
+    mEntitySystems.push_back(physics); // important to be pushed after collision observer.
 
-    // Event Systems.
+    // Event Handlers.
     //
-    ISystem* collisionSystem = new CollisionSystem();
-
-    mSystems.push_back(playerController);
-    mSystems.push_back(collisionObserver);
-    mSystems.push_back(physics); // important to be pushed after collision observer.
+    IEventHandler* collisionHandler = new CollisionHandler();
+    mEventHandlers.push_back(collisionHandler);
     
+    // Orthographic Camera.
+    //
     mCamera = std::make_shared<OrthographicCamera>(glm::vec3(0.0f, 0.0f, 0.5f), width, height);
 
+    // Entities (bit messy - needs refactoring even if just slightly).
+    //
     Transform playerTransform{};
     playerTransform.position = glm::vec3(325.0f, 275.0f, 0.0f);
     Entity player{};
@@ -63,7 +77,21 @@ void World::Init(uint32_t width, uint32_t height)
     enemy.world_transform = enemyTransform;
     enemy.label = "Enemy";
 
+    Transform boxTransform{};
+    boxTransform.position = glm::vec3(400.0f, 325.0f, 0.0f);
+    Entity box{};
+    box.id = CreateEntity(); 
+    box.color = glm::vec3(0.2f, 0.8f, 0.9f);
+    box.flags = Entity_Flags::ACTIVE;
+    box.texture_data = nullptr;
+    box.bounds = {50, 50};
+    box.world_transform = boxTransform;
+    box.label = "Box";
+
+    // AddEntity() must be called for each entity if it is to be made visible to any system.
+    //
     AddEntity(enemy);
+    AddEntity(box);
     AddEntity(player);
 }
 
@@ -80,7 +108,7 @@ EntityID World::CreateEntity() const
 
 void World::RunSystems() const 
 {
-    for(const auto& system : mSystems) 
+    for(const auto& system : mEntitySystems) 
     {
         system->Run();
     }  
