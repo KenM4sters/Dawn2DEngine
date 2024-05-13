@@ -29,6 +29,7 @@ add_executable(App
 	Camera.cpp
 	Input.cpp
 	World.cpp
+	ECS/Systems.cpp
 	ECS/CollisionObserver.cpp
 	ECS/Physics.cpp
 	RenderSystems/SimpleRenderSystem.cpp

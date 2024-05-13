@@ -67,17 +67,20 @@ void SimpleRenderSystem::Run(const WGPURenderPassEncoder encoder)
 
     for(auto& ent : mEntities) 
     {
-        const auto& renderable = ent.renderable;
-        wgpuRenderPassEncoderSetBindGroup(encoder, 0, renderable.uniforms[0].BindGroup, 0, nullptr);
-        wgpuRenderPassEncoderSetBindGroup(encoder, 1, renderable.uniforms[1].BindGroup, 0, nullptr);
-        wgpuRenderPassEncoderSetBindGroup(encoder, 2, renderable.uniforms[2].BindGroup, 0, nullptr);
+        if(ent.flags & Entity_Flags::ACTIVE) 
+        {
+            const auto& renderable = ent.renderable;
+            wgpuRenderPassEncoderSetBindGroup(encoder, 0, renderable.uniforms[0].BindGroup, 0, nullptr);
+            wgpuRenderPassEncoderSetBindGroup(encoder, 1, renderable.uniforms[1].BindGroup, 0, nullptr);
+            wgpuRenderPassEncoderSetBindGroup(encoder, 2, renderable.uniforms[2].BindGroup, 0, nullptr);
 
-        wgpuRenderPassEncoderSetVertexBuffer(encoder, 0, renderable.geometry->GetVertexBuffer(), 0, renderable.geometry->GetVertices().size()*sizeof(float));
-        
-        wgpuRenderPassEncoderDraw(encoder, 6, 1, 0, 0);
-    
-        ent.velocity = glm::vec3{0.0f};
-        ent.acceleration = glm::vec3{0.0f};
+            wgpuRenderPassEncoderSetVertexBuffer(encoder, 0, renderable.geometry->GetVertexBuffer(), 0, renderable.geometry->GetVertices().size()*sizeof(float));
+            
+            wgpuRenderPassEncoderDraw(encoder, 6, 1, 0, 0);
+
+            ent.velocity = glm::vec3{0.0f};
+            ent.acceleration = glm::vec3{0.0f};
+        }
     }
 }
 

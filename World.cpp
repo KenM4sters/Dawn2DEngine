@@ -2,6 +2,7 @@
 #include "World.hpp"
 #include "ECS/PlayerController.hpp"
 #include "ECS/CollisionObserver.hpp"
+#include "ECS/CollisionSystem.hpp"
 #include "ECS/Physics.hpp"
 
 std::vector<Entity> World::mEntities = {};
@@ -29,6 +30,10 @@ void World::Init(uint32_t width, uint32_t height)
     ISystem* playerController = new PlayerController();
     ISystem* collisionObserver = new CollisionObserver(width, height);
     ISystem* physics = new Physics();
+
+    // Event Systems.
+    //
+    ISystem* collisionSystem = new CollisionSystem();
 
     mSystems.push_back(playerController);
     mSystems.push_back(collisionObserver);

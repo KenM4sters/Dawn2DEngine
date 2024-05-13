@@ -1,8 +1,10 @@
 #include <cassert>
 #include <string.h>
 #include <stack>
+#include <algorithm>
 #include "CollisionObserver.hpp"
 #include "Entity.hpp"
+#include "../Events/Event.hpp"
 
 
 static glm::vec3 compass[] = 
@@ -51,15 +53,17 @@ void CollisionObserver::Run()
                 if(i == j) continue;
                 if(CheckCollision(v[i], v[j])) 
                 {
-                    CollisionDirection dir = CalculateCollisionDirection(v[i], v[j]);
+                    // CollisionDirection dir = CalculateCollisionDirection(v[i], v[j]);
 
-                    switch(dir) 
-                    {
-                        case CollisionDirection::ABOVE: v[i]->velocity.y *= -1; break;
-                        case CollisionDirection::BELOW: v[i]->velocity.y *= -1; break;
-                        case CollisionDirection::LEFT:  v[i]->velocity.x *= -1; break;
-                        case CollisionDirection::RIGHT: v[i]->velocity.x *= -1; break;
-                    }
+                    // switch(dir) 
+                    // {
+                    //     case CollisionDirection::ABOVE:  v[i]->velocity.y = std::max(v[i]->velocity.y, 0.0f); break;
+                    //     case CollisionDirection::BELOW:  v[i]->velocity.y = std::min(v[i]->velocity.y, 0.0f); break;
+                    //     case CollisionDirection::LEFT:   v[i]->velocity.x = std::min(v[i]->velocity.x, 0.0f); break;
+                    //     case CollisionDirection::RIGHT:  v[i]->velocity.x = std::max(v[i]->velocity.x, 0.0f); break;
+                    // }
+
+                    mEventBus->Publish(new CollisionEvent(v[i], v[j]));
                 } 
             }
         }
@@ -68,23 +72,41 @@ void CollisionObserver::Run()
 
 CollisionDirection CollisionObserver::CalculateCollisionDirection(const Entity* ent1, const Entity* ent2) const 
 {
-    std::stack<float> closestAngle = std::stack<float>{};
-    closestAngle.push(360);
-    unsigned int collisionDir = 180;
 
-    for(int i = 0; i < 4; i++) 
+    glm::vec3 entityDir = glm::normalize(ent2->world_transform.position - ent1->world_transform.position);
+
+
+    // std::stack<float> closestAngle = std::stack<float>{};
+    // closestAngle.push(360);
+    // unsigned int collisionDir = 180;
+
+    // for(int i = 0; i < 4; i++) 
+    // {
+    //     float angle = glm::dot(entityDir, compass[i]);
+    //     if(angle < closestAngle.top()) 
+    //     {
+    //         closestAngle.push(angle);
+    //         collisionDir = i;
+    //         std::cout << angle << std::endl;
+    //     }
+    // }
+
+
+
+    float max = 0.0f;
+    unsigned int best_match = -1;
+    for (unsigned int i = 0; i < 4; i++)
     {
-        float angle = glm::dot(glm::normalize(ent1->world_transform.position), glm::normalize(compass[i] + ent2->world_transform.position));
-        if(angle < closestAngle.top()) 
+        float dot_product = glm::dot(entityDir, compass[i]);
+        if (dot_product > max)
         {
-            closestAngle.push(angle);
-            collisionDir = i;
-
+            max = dot_product;
+            best_match = i;
+            std::cout << max << std::endl;
         }
-        // std::cout << angle << std::endl;
     }
 
-    return (CollisionDirection)collisionDir;
+    return (CollisionDirection)best_match;
 } 
 
 
